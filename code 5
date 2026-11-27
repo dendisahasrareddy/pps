@@ -1,0 +1,124 @@
+
+#include <stdio.h>
+
+#define VALID 0
+#define INVALID_MARK 1
+#define INELIGIBLE 2
+
+/* Function to validate marks */
+
+int validateMark(int mark)
+{
+    if (mark < 0 || mark > 100)
+        return 0;
+
+    return 1;
+}
+
+/* Function to calculate final mark */
+
+int calculateFinal(int mark, int bonus, int *finalMark)
+{
+    if (!validateMark(mark) || bonus < 0)
+        return 0;
+
+    if (bonus > 5)
+        bonus = 5;
+
+    *finalMark = mark + bonus;
+
+    if (*finalMark > 100)
+        *finalMark = 100;
+
+    return 1;
+}
+
+/* Function to check eligibility */
+
+int checkEligibility(int attendance)
+{
+    if (attendance < 75 || attendance > 100)
+        return 0;
+
+    return 1;
+}
+
+/* Function to calculate grade */
+
+char calculateGrade(int mark)
+{
+    if (mark >= 85)
+        return 'A';
+    else if (mark >= 70)
+        return 'B';
+    else if (mark >= 50)
+        return 'C';
+    else
+        return 'F';
+}
+
+/* Function to process student */
+
+void processStudent(int mark, int attendance,
+                    int bonus, int *finalMark,
+                    int *reason, char *grade)
+{
+    *finalMark = -1;
+    *reason = VALID;
+    *grade = '-';
+
+    if (!validateMark(mark))
+    {
+        *reason = INVALID_MARK;
+        return;
+    }
+
+    if (!checkEligibility(attendance))
+    {
+        *reason = INELIGIBLE;
+        return;
+    }
+
+    if (!calculateFinal(mark, bonus, finalMark))
+    {
+        *reason = INVALID_MARK;
+        return;
+    }
+
+    *grade = calculateGrade(*finalMark);
+}
+
+int main()
+{
+    int mark, attendance, bonus;
+    int finalMark, reason;
+    char grade;
+    int i;
+
+    for (i = 1; i <= 2; i++)
+    {
+        printf("\nEnter student %d details\n", i);
+
+        printf("Enter mark, attendance and bonus: ");
+        scanf("%d%d%d", &mark, &attendance, &bonus);
+
+        processStudent(mark, attendance, bonus,
+                       &finalMark, &reason, &grade);
+
+        if (reason == INVALID_MARK)
+        {
+            printf("Invalid mark or bonus\n");
+        }
+        else if (reason == INELIGIBLE)
+        {
+            printf("Student is not eligible\n");
+        }
+        else
+        {
+            printf("Final mark = %d\n", finalMark);
+            printf("Grade = %c\n", grade);
+        }
+    }
+
+    return 0;
+}
