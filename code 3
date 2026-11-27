@@ -1,0 +1,89 @@
+
+#include <stdio.h>
+#include <string.h>
+
+#define SIZE 32
+
+int readName(char name[])
+{
+    int ch;
+    size_t len;
+
+    if (fgets(name, SIZE, stdin) == NULL)
+        return 0;
+
+    len = strlen(name);
+
+    if (len > 0 && name[len - 1] == '\n')
+    {
+        name[len - 1] = '\0';
+    }
+    else
+    {
+        ch = getchar();
+
+        if (ch != '\n' && ch != EOF)
+        {
+            while (ch != '\n' && ch != EOF)
+                ch = getchar();
+
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+int safeAppend(char dest[], const char src[])
+{
+    size_t dlen = strlen(dest);
+    size_t slen = strlen(src);
+
+    if (dlen + slen >= SIZE)
+        return 0;
+
+    memcpy(dest + dlen, src, slen + 1);
+
+    return 1;
+}
+
+int main()
+{
+    char name1[SIZE];
+    char name2[SIZE];
+    char result[SIZE] = "";
+
+    printf("Enter first student name: ");
+
+    if (!readName(name1))
+    {
+        printf("Name too long\n");
+        return 0;
+    }
+
+    printf("Enter second student name: ");
+
+    if (!readName(name2))
+    {
+        printf("Name too long\n");
+        return 0;
+    }
+
+    if (strcmp(name1, name2) == 0)
+        printf("Both names are equal\n");
+    else
+        printf("Names are different\n");
+
+    if (safeAppend(result, name1) &&
+        safeAppend(result, " ") &&
+        safeAppend(result, name2))
+    {
+        printf("Result: %s\n", result);
+    }
+    else
+    {
+        printf("Result exceeds 31 characters\n");
+    }
+
+    return 0;
+}
