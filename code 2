@@ -1,0 +1,89 @@
+
+#include <stdio.h>
+
+int main()
+{
+    int groups, students;
+    int i, j, mark, attendance, bonus;
+    int finalMark;
+    int A = 0, B = 0, C = 0, F = 0;
+    int groupA, groupB, groupC, groupF;
+
+    printf("Enter number of groups: ");
+    scanf("%d", &groups);
+
+    for (i = 1; i <= groups; i++)
+    {
+        groupA = groupB = groupC = groupF = 0;
+
+        printf("\nEnter students in group %d: ", i);
+        scanf("%d", &students);
+
+        for (j = 1; j <= students; j++)
+        {
+            printf("\nEnter mark, attendance and bonus: ");
+            scanf("%d%d%d", &mark, &attendance, &bonus);
+
+            if (mark < 0 || mark > 100 ||
+                attendance < 0 || attendance > 100 ||
+                bonus < 0)
+            {
+                printf("Invalid input\n");
+                continue;
+            }
+
+            if (attendance < 75)
+            {
+                printf("Ineligible student\n");
+                continue;
+            }
+
+            if (bonus > 5)
+                bonus = 5;
+
+            finalMark = mark + bonus;
+
+            if (finalMark > 100)
+                finalMark = 100;
+
+            if (finalMark >= 85)
+            {
+                printf("Grade A\n");
+                A++;
+                groupA++;
+            }
+            else if (finalMark >= 70)
+            {
+                printf("Grade B\n");
+                B++;
+                groupB++;
+            }
+            else if (finalMark >= 50)
+            {
+                printf("Grade C\n");
+                C++;
+                groupC++;
+            }
+            else
+            {
+                printf("Grade F\n");
+                F++;
+                groupF++;
+            }
+        }
+
+        printf("\nGroup %d Results\n", i);
+        printf("A = %d\n", groupA);
+        printf("B = %d\n", groupB);
+        printf("C = %d\n", groupC);
+        printf("F = %d\n", groupF);
+    }
+
+    printf("\nOverall Results\n");
+    printf("A = %d\n", A);
+    printf("B = %d\n", B);
+    printf("C = %d\n", C);
+    printf("F = %d\n", F);
+
+    return 0;
+}
